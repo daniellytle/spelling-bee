@@ -1,23 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
+import GameModule from './GameModule';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="App dark:bg-gray-800 h-screen">
+      <header>
+        <h1 className='text-center py-10 text-4xl font-bold dark:text-gray-100'>Spelling Bee</h1>
       </header>
+      <GameModule />
     </div>
   );
 }
