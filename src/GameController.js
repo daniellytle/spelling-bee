@@ -2,6 +2,7 @@ import { useState, useRef } from "react"
 
 import LetterPicker from "./LetterPicker.js"
 import ScoreSheet from "./ScoreSheet.js"
+import HelpModal from "./HelpModal.js"
 
 function GameController({ letters, validWords }) {
   const [foundWords, setFoundWords] = useState([])
@@ -54,6 +55,7 @@ function GameController({ letters, validWords }) {
           onSubmit={submitWord}
           inputRef={inputRef}
         />
+        <HelpModal inputRef={inputRef}/>
       </div>
     </div>
   )
