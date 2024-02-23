@@ -2,49 +2,36 @@ import { useState, useRef } from "react"
 
 import LetterPicker from "./LetterPicker.js"
 import ScoreSheet from "./ScoreSheet.js"
-import toast, { Toaster } from "react-hot-toast"
 
 function GameController({ letters, validWords }) {
   const [foundWords, setFoundWords] = useState([])
   const [score, setScore] = useState(0)
   const inputRef = useRef([null])
 
-  const ShowError = (message) => {
-    toast(message, {
-      duration: 1000,
-
-      className: "relative",
-
-      style: {
-        background: "black",
-        color: "white",
-      },
-    })
-  }
-
-  const ShowSuccess = (message) => {
-    toast(message, {
-      duration: 500,
-      style: {
-        background: "transparent",
-        color: "black",
-      },
-    })
-  }
-
   const submitWord = (str) => {
     if (foundWords.includes(str)) {
-      ShowError("Already found")
+      return [false, "Already found"]
     } else if (validWords.has(str)) {
-      setScore(score + str.length)
+      const wordScore = getWordScore(str)
+      setScore(score + wordScore)
       setFoundWords(foundWords.concat(str).sort())
-      ShowSuccess("Nice!")
+      return [true, wordScore]
     } else if (!str.split("").every((char) => letters.includes(char))) {
-      ShowError("Invalid Letters")
+      return [false, "Invalid letters"]
     } else if (!str.includes(letters[0])) {
-      ShowError("Must contain special letter")
+      return [false, "Must contain special letter"]
     } else {
-      ShowError("Not in list")
+      return [false, "Not in word list"]
+    }
+  }
+
+  const getWordScore = (word) => {
+    if (letters.every((char) => word.includes(char))) {
+      return 14
+    } else if (word.length == 4) {
+      return 1
+    } else {
+      return word.length
     }
   }
 
@@ -60,7 +47,6 @@ function GameController({ letters, validWords }) {
       </div>
       <div className="md:w-2/3">
         <div className="md:mb-24">
-          <Toaster></Toaster>
         </div>
         <LetterPicker
           className="mt-8"

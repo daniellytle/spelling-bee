@@ -5,10 +5,14 @@ import pickRandom from "pick-random"
 function LetterPicker({ letters, onSubmit, inputRef }) {
   const [validLetters, setValidLetters] = useState(letters)
   const [inputString, setInputString] = useState(undefined)
+  const [inputWiggling, setInputWiggling] = useState(false)
+  const [happyBannerText, setHappyBannerText] = useState("")
+  const [sadBannerText, setSadBannerText] = useState("")
+  const [inputLock, setInputLock] = useState(false)
 
   const onInput = (event) => {
     const processedInput = event.target.value.toLowerCase()
-    if (processedInput.match(/^[a-z]*$/g)) {
+    if (!inputLock && processedInput.match(/^[a-z]*$/g)) {
       setInputString(processedInput)
     }
   }
@@ -23,10 +27,35 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
 
   const submit = (string) => {
     if (string !== "" && string !== undefined) {
-      onSubmit(string)
+      setInputLock(true)
+      const [result, message] = onSubmit(string)
+      if (result) {
+        animateHappy(message)
+      } else {
+        animateSad(message)
+      }
     }
     inputRef.current.focus()
+  }
+
+  const animateHappy = (message) => {
     setInputString("")
+    setHappyBannerText(message)
+    setInputLock(false)
+    setTimeout(() => {
+      setHappyBannerText("")
+    }, 500)
+  }
+
+  const animateSad = (message) => {
+    setInputWiggling(true)
+    setSadBannerText(message)
+    setTimeout(() => {
+      setInputString("")
+      setInputWiggling(false)
+      setInputLock(false)
+      setSadBannerText("")
+    }, 500)
   }
 
   const shuffleLetters = () => {
@@ -76,9 +105,9 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
     )
   }
 
-  const ColorInput = ({ inputString, validLetters }) => {
+  const ColorInput = ({ wiggling, inputString, validLetters }) => {
     const chars = (
-      <div>
+      <div style={wiggling ? {animation: 'wiggle 500ms ease'} : {}}>
         {inputString?.split("").map((char, index) => {
           const specialChar = char === validLetters[0]
           const notValidChar = !validLetters.includes(char)
@@ -114,8 +143,14 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
 
   return (
     <div className="my-4 text-center text-gray-800">
+      <div className="relative">
+        <div className="w-full -top-8 absolute flex align-center justify-center">
+          {happyBannerText && <div className="font-bold text-xl p-4" style={{animation: 'dropIn 1s ease'}}>Nice! <span className="text-yellow-400">+{happyBannerText}</span></div>}
+          {sadBannerText && <div className="bg-gray-900 text-white font-normal text-l px-2 py-1 rounded" style={{animation: 'dropIn 1s ease'}}>{sadBannerText}</div>}
+        </div>
+      </div>
       <input
-        className="transparent outline-none caret-transparent opacity-0"
+        className="transparent outline-none caret-transparent opacity-0 cursor-default"
         value={inputString}
         ref={inputRef}
         onInput={onInput}
@@ -123,7 +158,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
         onKeyDown={onKeyDown}
         inputMode="none"
       />
-      <ColorInput validLetters={validLetters} inputString={inputString} />
+      <ColorInput wiggling={inputWiggling} validLetters={validLetters} inputString={inputString} />
       <div className="text-3xl uppercase font-bold text-gray-800 mb-8">
         <div className="flex justify-center -mb-4">
           <LetterHexagon char={validLetters[3]} />
