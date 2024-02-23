@@ -4,8 +4,8 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
   const progress = Math.round((foundWords.length / validWords.size) * 100)
 
   return (
-    <div className="w-full rounded border border-solid border-grey-800 p-5 text-gray-800">
-      <div className="mb-2 text-xl font-bold text-left">{score}</div>
+    <div className="w-full rounded border border-solid border-grey-800 md:p-5 p-2 text-gray-800">
+      <div className="mb-2 md:text-xl text-normal font-bold text-left">{score}</div>
       <div className="w-full bg-gray-200 rounded-full h-2.5">
         <div
           className="bg-yellow-400 h-2.5 rounded-full"
