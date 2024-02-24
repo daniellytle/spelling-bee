@@ -17,8 +17,10 @@ function GameController({ letters, validWords }) {
       setScore(score + wordScore)
       setFoundWords(foundWords.concat(str).sort())
       return [true, wordScore]
+    } else if (str.length < 4) {
+      return [false, "Too short"]
     } else if (!str.split("").every((char) => letters.includes(char))) {
-      return [false, "Invalid letters"]
+      return [false, "Bad letters"]
     } else if (!str.includes(letters[0])) {
       return [false, "Must contain special letter"]
     } else {
