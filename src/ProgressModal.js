@@ -62,10 +62,10 @@ function ProgressModal({ foundWords, validWords, inputRef }) {
                   >
                     Word List
                   </Dialog.Title>
-                  <div className="mt-4 grid grid-cols-4 gap-1">
+                  <div className="mt-4 grid grid-cols-4 gap-1 text-gray-700 capitalize">
                     {Array.from(validWords).map((word) => {
                       return (
-                        <p key={word} className="text-gray-700 capitalize">
+                        <p key={word}>
                           {word}
                           {foundWords.includes(word) && (
                             <span className="ml-1 font-bold text-yellow-400">

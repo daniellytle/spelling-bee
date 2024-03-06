@@ -4,12 +4,12 @@ import GameController from "./GameController.js"
 import { format } from "date-fns"
 
 function App() {
-  const todayString = format(new Date(), "MMM dd, yyyy")
+  const todayString = format(new Date(), "MMMM do, yyyy")
   const { letters, validWords } = new SpellingBee().getGameForDate(new Date())
 
   return (
     <div className="App touch-manipulation">
-      <header className="flex flex-col text-center py-4 md:py-10">
+      <header className="flex flex-col text-center py-2 md:py-4 mb-6 border border-gray-200">
         <span className="text-4xl font-bold">Free Bee</span>
         <span className="">{todayString}</span>
       </header>

@@ -14,11 +14,13 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
       </div>
       <div className="text-left md:block hidden mt-4">
         <div className="font-bold">Found Words</div>
-        {foundWords.map((word) => (
-          <div className="underlined capitalize" key={word}>
-            {word}
-          </div>
-        ))}
+        <div className="grid">
+          {foundWords.map((word) => (
+            <div className="underlined capitalize" key={word}>
+              {word}
+            </div>
+          ))}
+        </div>
         <div
           className="w-full bg-gray-100 border-t-1 border-gray-300 mt-2"
           style={{ height: 1 }}

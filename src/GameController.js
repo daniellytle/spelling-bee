@@ -54,8 +54,8 @@ function GameController({ letters, validWords }) {
   }
 
   return (
-    <div className="container m-auto px-4 md:flex">
-      <div className="md:order-last md:w-1/3">
+    <div className="container max-w-7xl m-auto px-4 md:flex">
+      <div className="md:order-last md:w-2/5">
         <ScoreSheet
           foundWords={foundWords}
           score={score}
@@ -63,7 +63,7 @@ function GameController({ letters, validWords }) {
           inputRef={inputRef}
         />
       </div>
-      <div className="md:w-2/3">
+      <div className="md:w-3/5">
         <div className="md:mb-24">
         </div>
         <LetterPicker
