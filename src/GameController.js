@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react"
-import { useCookies } from "react-cookie"
+import { useCookieState } from "use-cookie-state"
 import { format } from "date-fns";
 
 import LetterPicker from "./LetterPicker.js"
@@ -7,16 +7,24 @@ import ScoreSheet from "./ScoreSheet.js"
 import HelpModal from "./HelpModal.js"
 
 function GameController({ letters, validWords }) {
-  const [cookies, setCookie] = useCookies(['foundWords', 'playingDate']);
-  const todayString = format(new Date(), "yyyy-MM-dd")
-  if (cookies['playingDate'] !== todayString) {
-    setCookie('playingDate', todayString)
-    setCookie('foundWords', [])
-  }
-
-  const [foundWords, setFoundWords] = useState(cookies['foundWords'])
   const [score, setScore] = useState(0)
   const inputRef = useRef([null])
+
+  const todayString = format(new Date(), "yyyy-MM-dd")
+  const [playingDate, setPlayingDate] = useCookieState("playingDate", "")
+  const [foundWords, setFoundWords] = useCookieState("foundWords", [], {
+      decode: {
+        decode: (value) => {
+          return JSON.parse(decodeURIComponent(value))
+        }
+      }
+    }
+  )
+
+  if (playingDate !== todayString) {
+    setPlayingDate(todayString)
+    setFoundWords([])
+  }
 
   useEffect(() => {
     setScore(foundWords.map((word) => getWordScore(word)).reduce((sum, x) => sum + x, 0))
@@ -28,9 +36,8 @@ function GameController({ letters, validWords }) {
     } else if (validWords.has(str)) {
       const wordScore = getWordScore(str)
       const updatedFoundWords = foundWords.concat(str).sort()
-      setCookie('foundWords', updatedFoundWords)
-      setScore(score + wordScore)
       setFoundWords(updatedFoundWords)
+      setScore(score + wordScore)
       return [true, wordScore]
     } else if (str.length < 4) {
       return [false, "Too short"]
