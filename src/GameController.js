@@ -70,7 +70,7 @@ function GameController({ letters, validWords }) {
           inputRef={inputRef}
         />
       </div>
-      <div className="md:w-3/5">
+      <div className="md:w-3/5 mb-5">
         <div className="md:mb-24">
         </div>
         <LetterPicker

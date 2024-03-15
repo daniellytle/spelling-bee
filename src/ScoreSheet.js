@@ -1,18 +1,14 @@
+import { useState } from "react"
 import ProgressModal from "./ProgressModal"
+import classNames from "classnames"
 
 function ScoreSheet({ foundWords, score, validWords, inputRef }) {
   const progress = Math.round((foundWords.length / validWords.size) * 100)
+  const [mobileExpanderVisible, setMobileExpanderVisible] = useState(false)
 
-  return (
-    <div className="w-full rounded border border-solid border-grey-800 md:p-5 p-2 text-gray-800">
-      <div className="mb-2 md:text-xl text-normal font-bold text-left">{score}</div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5">
-        <div
-          className="bg-yellow-400 h-2.5 rounded-full"
-          style={{ width: `${progress}%` }}
-        ></div>
-      </div>
-      <div className="text-left md:block hidden mt-4">
+  const FoundWordsList = ({ foundWords }) => {
+    return (
+      <div className="text-left mt-4">
         <div className="font-bold">Found Words</div>
         <div className="grid">
           {foundWords.map((word) => (
@@ -30,6 +26,46 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
           validWords={validWords}
           inputRef={inputRef}
         />
+      </div>
+    )
+  }
+
+  return (
+    <div className="w-full rounded border border-solid border-grey-800 md:p-5 p-2 text-gray-800">
+      <div className="mb-2 flex justify-between" onClick={() => setMobileExpanderVisible((value) => !value)}>
+        <div className="inline md:text-xl text-normal font-bold text-left">
+          {score}
+        </div>
+        <div
+          className={classNames("inline md:hidden text-gray-800", {'rotate-180': mobileExpanderVisible})}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="m19.5 8.25-7.5 7.5-7.5-7.5"
+            />
+          </svg>
+        </div>
+      </div>
+      <div className="w-full bg-gray-200 rounded-full h-2.5">
+        <div
+          className="bg-yellow-400 h-2.5 rounded-full"
+          style={{ width: `${progress}%` }}
+        ></div>
+      </div>
+      <div className="md:hidden">
+        {mobileExpanderVisible && <FoundWordsList foundWords={foundWords} />}
+      </div>
+      <div className="md:block hidden">
+        <FoundWordsList foundWords={foundWords} />
       </div>
     </div>
   )
