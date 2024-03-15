@@ -8,13 +8,16 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
 
   const FoundWordsList = ({ foundWords }) => {
     return (
-      <div className="text-left mt-4">
+      <div className="text-left mt-4 capitalize">
         <div className="font-bold">Found Words</div>
-        <div className="grid">
+        <div className="found-words-grid hidden md:grid">
           {foundWords.map((word) => (
-            <div className="underlined capitalize" key={word}>
-              {word}
-            </div>
+            <div key={word}>{word}</div>
+          ))}
+        </div>
+        <div className="md:hidden">
+          {foundWords.map((word) => (
+            <div key={word}>{word}</div>
           ))}
         </div>
         <div
@@ -32,24 +35,29 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
 
   return (
     <div className="w-full rounded border border-solid border-grey-800 md:p-5 p-2 text-gray-800">
-      <div className="mb-2 flex justify-between" onClick={() => setMobileExpanderVisible((value) => !value)}>
+      <div
+        className="mb-2 flex justify-between"
+        onClick={() => setMobileExpanderVisible((value) => !value)}
+      >
         <div className="inline md:text-xl text-normal font-bold text-left">
           {score}
         </div>
         <div
-          className={classNames("inline md:hidden text-gray-800", {'rotate-180': mobileExpanderVisible})}
+          className={classNames("inline md:hidden text-gray-800", {
+            "rotate-180": mobileExpanderVisible,
+          })}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            className="w-6 h-6"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="m19.5 8.25-7.5 7.5-7.5-7.5"
             />
           </svg>
