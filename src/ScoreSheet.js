@@ -2,8 +2,15 @@ import { useState } from "react"
 import ProgressModal from "./ProgressModal"
 import classNames from "classnames"
 
-function ScoreSheet({ foundWords, score, validWords, inputRef }) {
-  const progress = Math.round((foundWords.length / validWords.size) * 100)
+const getRanking = (score, maximumScore) => {
+  const progress = Math.round((score / maximumScore) * 100)
+  return 10 - [100, 70, 50, 40, 25, 15, 8, 5, 2, 0].findIndex((level) => level <= progress)
+}
+
+const RankNames = ["Beginner", "Good Start", "Moving Up", "Good", "Solid", "Nice", "Great", "Amazing", "Genius", "Queen Bee"]
+
+function ScoreSheet({ maximumScore, foundWords, score, validWords, inputRef }) {
+  const ranking = getRanking(score, maximumScore)
   const [mobileExpanderVisible, setMobileExpanderVisible] = useState(false)
 
   const FoundWordsList = ({ foundWords }) => {
@@ -40,7 +47,7 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
         onClick={() => setMobileExpanderVisible((value) => !value)}
       >
         <div className="inline md:text-xl text-normal font-bold text-left">
-          {score}
+          {RankNames[ranking - 1]}
         </div>
         <div
           className={classNames("inline md:hidden text-gray-800", {
@@ -63,11 +70,22 @@ function ScoreSheet({ foundWords, score, validWords, inputRef }) {
           </svg>
         </div>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-2.5">
-        <div
-          className="bg-yellow-400 h-2.5 rounded-full"
-          style={{ width: `${progress}%` }}
-        ></div>
+      <div className="font-medium text-sm w-full flex justify-between relative text-center">
+        {[1,2,3,4,5,6,7,8,9].map((rank, index) => {
+          if (ranking === rank) {
+            return <div key={index} className="h-8 w-8 rounded-full bg-yellow-300 z-10 pt-1.5">{score}</div>
+          } else if (ranking > rank) {
+            return <div key={index} className="h-8 w-8 rounded-full bg-yellow-300 z-10"></div>
+          } else {
+            return <div key={index} className="h-8 w-8 rounded-full bg-gray-200 z-10"></div>
+          }
+        })}
+        <div className="bg-gray-200 rounded-full h-1 w-full absolute top-3.5 z-0">
+          <div
+            className="bg-yellow-300 h-1 rounded-full"
+            style={{ width: `${(ranking / 10) * 100}%` }}
+          ></div>
+        </div>
       </div>
       <div className="md:hidden">
         {mobileExpanderVisible && <FoundWordsList foundWords={foundWords} />}

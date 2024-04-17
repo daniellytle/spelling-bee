@@ -6,8 +6,19 @@ import LetterPicker from "./LetterPicker.js"
 import ScoreSheet from "./ScoreSheet.js"
 import HelpModal from "./HelpModal.js"
 
+const getWordScore = (letters, word) => {
+  if (letters.every((char) => word.includes(char))) {
+    return 14
+  } else if (word.length === 4) {
+    return 1
+  } else {
+    return word.length
+  }
+}
+
 function GameController({ letters, validWords }) {
   const [score, setScore] = useState(0)
+  const maximumScore = Array.from(validWords).map(word => getWordScore(letters, word)).reduce((agg, score) => agg + score, 0)
   const inputRef = useRef([null])
 
   const todayString = format(new Date(), "yyyy-MM-dd")
@@ -27,14 +38,14 @@ function GameController({ letters, validWords }) {
   }
 
   useEffect(() => {
-    setScore(foundWords.map((word) => getWordScore(word)).reduce((sum, x) => sum + x, 0))
-  }, [foundWords])
+    setScore(foundWords.map((word) => getWordScore(letters, word)).reduce((sum, x) => sum + x, 0))
+  }, [letters, foundWords])
 
   const submitWord = (str) => {
     if (foundWords.includes(str)) {
       return [false, "Already found"]
     } else if (validWords.has(str)) {
-      const wordScore = getWordScore(str)
+      const wordScore = getWordScore(letters, str)
       const updatedFoundWords = foundWords.concat(str).sort()
       setFoundWords(updatedFoundWords)
       setScore(score + wordScore)
@@ -50,20 +61,11 @@ function GameController({ letters, validWords }) {
     }
   }
 
-  const getWordScore = (word) => {
-    if (letters.every((char) => word.includes(char))) {
-      return 14
-    } else if (word.length === 4) {
-      return 1
-    } else {
-      return word.length
-    }
-  }
-
   return (
     <div className="container max-w-7xl m-auto px-4 md:flex">
       <div className="md:order-last md:w-2/5">
         <ScoreSheet
+          maximumScore={maximumScore}
           foundWords={foundWords}
           score={score}
           validWords={validWords}

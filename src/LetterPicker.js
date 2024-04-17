@@ -83,7 +83,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
 
   useEffect(() => {
     inputRef.current.focus()
-  }, [])
+  }, [inputRef])
 
   const LetterHexagon = ({ char, yellow }) => {
     return (
@@ -144,7 +144,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
   return (
     <div className="my-4 text-center text-gray-800">
       <div className="relative">
-        <div className="w-full -top-8 absolute flex align-center justify-center">
+        <div className="w-full -top-8 absolute flex align-center justify-center z-20">
           {happyBannerText && <div className="font-bold text-xl p-4" style={{animation: 'dropIn 1s ease'}}>Nice! <span className="text-yellow-400">+{happyBannerText}</span></div>}
           {sadBannerText && <div className="bg-gray-900 text-white font-normal text-l px-2 py-1 rounded" style={{animation: 'dropIn 1s ease'}}>{sadBannerText}</div>}
         </div>
@@ -176,13 +176,13 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
       </div>
       <div className="flex justify-center">
         <button
-          className="border-gray-200 border hover:bg-yellow-500 text-gray-800 py-2 px-4 rounded-full mx-2"
+          className="border-gray-200 border hover:bg-yellow-300 hover:border-yellow-300 text-gray-800 py-2 px-4 rounded-full mx-2"
           onClick={deleteOneChar}
         >
           Delete
         </button>
         <button
-          className="border-gray-200 border hover:bg-yellow-500 text-gray-800 py-2 px-4 rounded-full mx-2"
+          className="border-gray-200 border hover:bg-yellow-300 hover:border-yellow-300 text-gray-800 py-2 px-4 rounded-full mx-2"
           onClick={shuffleLetters}
         >
           <svg
@@ -201,7 +201,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
           </svg>
         </button>
         <button
-          className="border-gray-200 border hover:bg-yellow-500 text-gray-800 py-2 px-4 rounded-full mx-2"
+          className="border-gray-200 border hover:bg-yellow-300 hover:border-yellow-300 text-gray-800 py-2 px-4 rounded-full mx-2"
           onClick={() => submit(inputString)}
         >
           Enter
