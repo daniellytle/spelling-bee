@@ -2,9 +2,9 @@ import { useState, useRef, useEffect } from "react"
 import { useCookieState } from "use-cookie-state"
 import { format } from "date-fns";
 
-import LetterPicker from "./LetterPicker.js"
-import ScoreSheet from "./ScoreSheet.js"
-import HelpModal from "./HelpModal.js"
+import LetterPicker from "./LetterPicker.jsx"
+import ScoreSheet from "./ScoreSheet.jsx"
+import HelpModal from "./HelpModal.jsx"
 
 const getWordScore = (letters, word) => {
   if (letters.every((char) => word.includes(char))) {

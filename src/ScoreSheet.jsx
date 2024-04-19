@@ -43,7 +43,7 @@ function ScoreSheet({ maximumScore, foundWords, score, validWords, inputRef }) {
   return (
     <div className="w-full rounded border border-solid border-grey-800 md:p-5 p-2 text-gray-800">
       <div
-        className="mb-2 flex justify-between"
+        className="mb-2 flex justify-between align-middle"
         onClick={() => setMobileExpanderVisible((value) => !value)}
       >
         <div className="inline md:text-xl text-normal font-bold text-left">
@@ -75,15 +75,15 @@ function ScoreSheet({ maximumScore, foundWords, score, validWords, inputRef }) {
           if (ranking === rank) {
             return <div key={index} className="h-8 w-8 rounded-full bg-yellow-300 z-10 pt-1.5">{score}</div>
           } else if (ranking > rank) {
-            return <div key={index} className="h-8 w-8 rounded-full bg-yellow-300 z-10"></div>
+            return <div key={index} className="h-4 w-4 mt-2 rounded-full bg-yellow-300 z-10"></div>
           } else {
-            return <div key={index} className="h-8 w-8 rounded-full bg-gray-200 z-10"></div>
+            return <div key={index} className="h-4 w-4 mt-2 rounded-full bg-gray-200 z-10"></div>
           }
         })}
         <div className="bg-gray-200 rounded-full h-1 w-full absolute top-3.5 z-0">
           <div
             className="bg-yellow-300 h-1 rounded-full"
-            style={{ width: `${(ranking / 10) * 100}%` }}
+            style={{ width: `${(ranking  / 9) * 100}%` }}
           ></div>
         </div>
       </div>
