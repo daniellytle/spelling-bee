@@ -5,23 +5,15 @@ import { format } from "date-fns";
 import LetterPicker from "./LetterPicker.jsx"
 import ScoreSheet from "./ScoreSheet.jsx"
 import HelpModal from "./HelpModal.jsx"
-
-const getWordScore = (letters, word) => {
-  if (letters.every((char) => word.includes(char))) {
-    return 14
-  } else if (word.length === 4) {
-    return 1
-  } else {
-    return word.length
-  }
-}
+import { getMaximumScore, getPointsToNextRank, getWordScore } from "./ScoreUtils.js";
 
 function GameController({ letters, validWords }) {
   const [score, setScore] = useState(0)
-  const maximumScore = Array.from(validWords).map(word => getWordScore(letters, word)).reduce((agg, score) => agg + score, 0)
+  
   const inputRef = useRef([null])
 
   const todayString = format(new Date(), "yyyy-MM-dd")
+  const maximumScore = getMaximumScore(Array.from(validWords))
   const [playingDate, setPlayingDate] = useCookieState("playingDate", "")
   const [foundWords, setFoundWords] = useCookieState("foundWords", [], {
       decode: {
@@ -32,20 +24,22 @@ function GameController({ letters, validWords }) {
     }
   )
 
+  console.log(getPointsToNextRank(score, maximumScore))
+
   if (playingDate !== todayString) {
     setPlayingDate(todayString)
     setFoundWords([])
   }
 
   useEffect(() => {
-    setScore(foundWords.map((word) => getWordScore(letters, word)).reduce((sum, x) => sum + x, 0))
+    setScore(foundWords.map((word) => getWordScore(word)).reduce((sum, x) => sum + x, 0))
   }, [letters, foundWords])
 
   const submitWord = (str) => {
     if (foundWords.includes(str)) {
       return [false, "Already found"]
     } else if (validWords.has(str)) {
-      const wordScore = getWordScore(letters, str)
+      const wordScore = getWordScore(str)
       const updatedFoundWords = foundWords.concat(str).sort()
       setFoundWords(updatedFoundWords)
       setScore(score + wordScore)

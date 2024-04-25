@@ -1,13 +1,7 @@
 import { useState } from "react"
 import ProgressModal from "./ProgressModal"
 import classNames from "classnames"
-
-const getRanking = (score, maximumScore) => {
-  const progress = Math.round((score / maximumScore) * 100)
-  return 10 - [100, 70, 50, 40, 25, 15, 8, 5, 2, 0].findIndex((level) => level <= progress)
-}
-
-const RankNames = ["Beginner", "Good Start", "Moving Up", "Good", "Solid", "Nice", "Great", "Amazing", "Genius", "Queen Bee"]
+import { getRankingTitle, getRanking, getPointsToNextRank, getNextRank } from "./ScoreUtils"
 
 function ScoreSheet({ maximumScore, foundWords, score, validWords, inputRef }) {
   const ranking = getRanking(score, maximumScore)
@@ -47,7 +41,10 @@ function ScoreSheet({ maximumScore, foundWords, score, validWords, inputRef }) {
         onClick={() => setMobileExpanderVisible((value) => !value)}
       >
         <div className="inline md:text-xl text-normal font-bold text-left">
-          {RankNames[ranking - 1]}
+          {getRankingTitle(score, maximumScore)}
+        </div>
+        <div className="inline text-sm text-normal font-normal text-right text-gray-400">
+          {getPointsToNextRank(score, maximumScore)} points to <span className="font-bold">{getNextRank(score, maximumScore)}</span>
         </div>
         <div
           className={classNames("inline md:hidden text-gray-800", {
