@@ -7,7 +7,7 @@ import { useCookieState } from "use-cookie-state"
 function App() {
   const todayString = format(new Date(), "MMMM do, yyyy")
   const { letters, validWords } = new SpellingBee().getGameForDate(new Date())
-  const [previousBest] = useCookieState("previousBest", "")
+  const [previousRankTitle, setPreviousRankTitle] = useCookieState("previousRankTitle", "")
 
   return (
     <div className="App touch-manipulation">
@@ -17,10 +17,10 @@ function App() {
             <div className="text-4xl font-bold">Free Bee</div>
             <div>{todayString}</div>
           </div>
-          <div className="font-normal text-right">
-            {/* <div className="text-nowrap">Yesterday's Best:</div>
-            <div className="font-bold text-xl text-yellow-400">{previousBest}</div> */}
-          </div>
+          {previousRankTitle && <div className="font-normal text-right">
+            <div className="text-nowrap">Yesterday's Best:</div>
+            <div className="font-bold text-xl text-yellow-500">{previousRankTitle}</div>
+          </div>}
         </div>
       </header>
       <GameController letters={letters} validWords={validWords} />

@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import LetterPicker from "./LetterPicker.jsx"
 import ScoreSheet from "./ScoreSheet.jsx"
 import HelpModal from "./HelpModal.jsx"
-import { getMaximumScore, getPointsToNextRank, getWordScore } from "./ScoreUtils.js";
+import { getMaximumScore, getRankingTitle, getWordScore } from "./ScoreUtils.js";
 
 function GameController({ letters, validWords }) {
   const [score, setScore] = useState(0)
@@ -14,6 +14,8 @@ function GameController({ letters, validWords }) {
 
   const todayString = format(new Date(), "yyyy-MM-dd")
   const maximumScore = getMaximumScore(Array.from(validWords))
+  const [previousRankTitle, setPreviousRankTitle] = useCookieState("previousRankTitle", "")
+  const [currentRankTitle, setCurrentRankTitle] = useCookieState("currentRankTitle", "")
   const [playingDate, setPlayingDate] = useCookieState("playingDate", "")
   const [foundWords, setFoundWords] = useCookieState("foundWords", [], {
       decode: {
@@ -24,9 +26,9 @@ function GameController({ letters, validWords }) {
     }
   )
 
-  console.log(getPointsToNextRank(score, maximumScore))
-
   if (playingDate !== todayString) {
+    setPreviousRankTitle(currentRankTitle)
+    setCurrentRankTitle("Beginner")
     setPlayingDate(todayString)
     setFoundWords([])
   }
@@ -43,6 +45,7 @@ function GameController({ letters, validWords }) {
       const updatedFoundWords = foundWords.concat(str).sort()
       setFoundWords(updatedFoundWords)
       setScore(score + wordScore)
+      setCurrentRankTitle(getRankingTitle(score + wordScore, maximumScore))
       return [true, wordScore]
     } else if (str.length < 4) {
       return [false, "Too short"]
