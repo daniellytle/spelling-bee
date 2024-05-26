@@ -4,15 +4,15 @@ import pickRandom from "pick-random"
 
 function LetterPicker({ letters, onSubmit, inputRef }) {
   const [validLetters, setValidLetters] = useState(letters)
-  const [inputString, setInputString] = useState(undefined)
+  const [inputString, setInputString] = useState("")
   const [inputWiggling, setInputWiggling] = useState(false)
   const [happyBannerText, setHappyBannerText] = useState("")
   const [sadBannerText, setSadBannerText] = useState("")
   const [inputLock, setInputLock] = useState(false)
 
-  const onInput = (event) => {
-    const processedInput = event.target.value.toLowerCase()
-    if (!inputLock && processedInput.match(/^[a-z]*$/g)) {
+  const onChange = (event) => {
+    if (!inputLock) {
+      const processedInput = event.target.value.replace(/[^a-z]/g, "")
       setInputString(processedInput)
     }
   }
@@ -129,7 +129,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
 
     return (
       <div className="w-full mb-8 h-11 text-center text-4xl font-bold relative">
-        {inputString !== undefined ? (
+        {inputString !== "" ? (
           chars
         ) : (
           <span className="font-light text-gray-500 relative">
@@ -153,10 +153,11 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
         className="transparent outline-none caret-transparent opacity-0 cursor-default"
         value={inputString}
         ref={inputRef}
-        onInput={onInput}
+        onChange={onChange}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
         inputMode="none"
+        pattern="^[a-z]+$"
       />
       <ColorInput wiggling={inputWiggling} validLetters={validLetters} inputString={inputString} />
       <div className="text-3xl uppercase font-bold text-gray-800 mb-8">
