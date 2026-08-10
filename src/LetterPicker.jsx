@@ -9,6 +9,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
   const [happyBannerText, setHappyBannerText] = useState("")
   const [sadBannerText, setSadBannerText] = useState("")
   const [inputLock, setInputLock] = useState(false)
+  const [shuffleCount, setShuffleCount] = useState(0)
 
   const onChange = (event) => {
     if (!inputLock) {
@@ -59,6 +60,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
   }
 
   const shuffleLetters = () => {
+    setShuffleCount(shuffleCount + 1)
     setValidLetters(
       [validLetters[0]].concat(pickRandom(validLetters.slice(1), { count: 6 }))
     )
@@ -91,7 +93,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
         className={`w-24 h-24 hexagon ${yellow ? "bg-yellow-300" : "bg-gray-200"}`}
         onClick={() => enterChar(char)}
       >
-        <div className="mt-8">{char}</div>
+        <div className="mt-8" style={{ animation: "fadeIn 300ms ease" }}>{char}</div>
       </div>
     )
   }
@@ -160,7 +162,7 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
         pattern="^[a-z]+$"
       />
       <ColorInput wiggling={inputWiggling} validLetters={validLetters} inputString={inputString} />
-      <div className="text-3xl uppercase font-bold text-gray-800 mb-8">
+      <div key={shuffleCount} className="text-3xl uppercase font-bold text-gray-800 mb-8">
         <div className="flex justify-center -mb-4">
           <LetterHexagon char={validLetters[3]} />
           <LetterHexagon char={validLetters[1]} />
