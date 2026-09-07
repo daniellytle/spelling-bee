@@ -20,7 +20,6 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
   const [happyBannerText, setHappyBannerText] = useState("")
   const [sadBannerText, setSadBannerText] = useState("")
   const [inputLock, setInputLock] = useState(false)
-  const [shuffleCount, setShuffleCount] = useState(0)
 
   const onChange = (event) => {
     if (!inputLock) {
@@ -71,7 +70,6 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
   }
 
   const shuffleLetters = () => {
-    setShuffleCount(shuffleCount + 1)
     setValidLetters(
       [validLetters[0]].concat(pickRandom(validLetters.slice(1), { count: 6 }))
     )
@@ -162,19 +160,19 @@ function LetterPicker({ letters, onSubmit, inputRef }) {
         pattern="^[a-z]+$"
       />
       <ColorInput wiggling={inputWiggling} validLetters={validLetters} inputString={inputString} />
-      <div key={shuffleCount} className="text-3xl uppercase font-bold text-gray-800 mb-8">
+      <div className="text-3xl uppercase font-bold text-gray-800 mb-8">
         <div className="flex justify-center -mb-4">
-          <LetterHexagon char={validLetters[3]} onSelect={() => enterChar(validLetters[3])} />
-          <LetterHexagon char={validLetters[1]} onSelect={() => enterChar(validLetters[1])} />
+          <LetterHexagon key={`1-${validLetters[3]}`} char={validLetters[3]} onSelect={() => enterChar(validLetters[3])} />
+          <LetterHexagon key={`2-${validLetters[1]}`} char={validLetters[1]} onSelect={() => enterChar(validLetters[1])} />
         </div>
         <div className="flex justify-center -mb-4">
-          <LetterHexagon char={validLetters[2]} onSelect={() => enterChar(validLetters[2])} />
-          <LetterHexagon char={validLetters[0]} yellow onSelect={() => enterChar(validLetters[0])} />
-          <LetterHexagon char={validLetters[4]} onSelect={() => enterChar(validLetters[4])} />
+          <LetterHexagon key={`3-${validLetters[2]}`} char={validLetters[2]} onSelect={() => enterChar(validLetters[2])} />
+          <LetterHexagon key={`4-${validLetters[0]}`} char={validLetters[0]} yellow onSelect={() => enterChar(validLetters[0])} />
+          <LetterHexagon key={`5-${validLetters[4]}`} char={validLetters[4]} onSelect={() => enterChar(validLetters[4])} />
         </div>
         <div className="flex justify-center">
-          <LetterHexagon char={validLetters[5]} onSelect={() => enterChar(validLetters[5])} />
-          <LetterHexagon char={validLetters[6]} onSelect={() => enterChar(validLetters[6])} />
+          <LetterHexagon key={`6-${validLetters[5]}`} char={validLetters[5]} onSelect={() => enterChar(validLetters[5])} />
+          <LetterHexagon key={`7-${validLetters[6]}`} char={validLetters[6]} onSelect={() => enterChar(validLetters[6])} />
         </div>
       </div>
       <div className="flex justify-center">
